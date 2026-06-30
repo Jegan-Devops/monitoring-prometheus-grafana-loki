@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 15s       # how often Prometheus pulls metrics
+  evaluation_interval: 15s   # how often alert rules are checked
+
+rule_files:
+  - "alert.rules.yml"
+
+scrape_configs:
+  # Prometheus scraping itself — useful baseline to confirm the stack is alive
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # node-exporter exposes host-level metrics (CPU, memory, disk, network) —
+  # in production this target list would be every EC2 instance's IP:9100
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
